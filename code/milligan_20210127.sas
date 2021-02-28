@@ -2,10 +2,11 @@
 
 %let rocpath=U:\Consulting\KEL\Texas_AM\Dobefest;
 %include "&rocpath.\ROC_Optimal_Cutoff_031816.sas";
+%let outdir=U:\Consulting\KEL\Fox\Berent\Milligan_20200921\output;
+libname mlm "U:\Consulting\KEL\Fox\Berent\Milligan_20200921\input" ;
 
-libname mlm "U:\Consulting\KEL\Fox\Berent\Milligan_20200921\input" access=readonly; 
-
-data mlm; set mlm.milligan_20210126; run;
+/*data mlm; set mlm.milligan_20210126; run;*/
+data mlm; set mlm.mlm_20210221; run;
 
 %let ds = mlm;
 
@@ -54,102 +55,293 @@ data t3 ; set t3 t ; data lsmean ; set lsmean ls ; data diffs; set diffs d ;   r
 %mend;
 
 data rawmean; set _null_; data t3; set _null_; data lsmean; set _null_; data diffs; set _null_; run;
-/*%desc_mean(UTI_Number,CystoIntraOp,anova,257);*/
-%desc_mean(AUSPelvis_post1st, EDTA_Study , anova,158);
-%desc_mean(Flush_TmToMin, EDTA_Study , anova,163);
-%desc_mean(Post_creat_18mo, EDTA_Study , anova,178);
-%desc_mean(Post_creat_1mo, EDTA_Study , anova,173);
-%desc_mean(Post_creat_1week, EDTA_Study , anova,172);
-%desc_mean(Post_creat_1yr, EDTA_Study , anova,177);
-%desc_mean(Post_creat_2yr, EDTA_Study , anova,179);
-%desc_mean(Post_creat_3mo, EDTA_Study , anova,174);
-%desc_mean(Post_creat_3yr, EDTA_Study , anova,180);
-%desc_mean(Post_creat_6mo, EDTA_Study , anova,175);
-%desc_mean(Post_creat_9mo, EDTA_Study , anova,176);
-%desc_mean(Post_creat_lastor3mo, EDTA_Study , anova,181);
-%desc_mean(Post_Lastcreat, EDTA_Study , anova,182);
-%desc_mean(Post_PelvisAUS, EDTA_Study , anova,191);
-%desc_mean(PT_SURV_T, EDTA_Study , anova,147);
-%desc_mean(SUB_T1, EDTA_Study , anova,153);
-%desc_mean(TimeFirstUTI, EDTA_Study , anova,190);
-%desc_mean(TimeMin, EDTA_Study , anova,164);
-%desc_mean(TimeStoneBlock, EDTA_Study , anova,165);
-%desc_mean(TimMinStoneBlock, EDTA_Study , anova,166);
-%desc_mean(UTI_number, EDTA_Study , anova,155);
-%desc_mean(AUSPelvis_post1st, EDTAGroup , anova,108);
-%desc_mean(Flush_TmToMin, EDTAGroup , anova,113);
-%desc_mean(Post_creat_18mo, EDTAGroup , anova,128);
-%desc_mean(Post_creat_1mo, EDTAGroup , anova,123);
-%desc_mean(Post_creat_1week, EDTAGroup , anova,122);
-%desc_mean(Post_creat_1yr, EDTAGroup , anova,127);
-%desc_mean(Post_creat_2yr, EDTAGroup , anova,129);
-%desc_mean(Post_creat_3mo, EDTAGroup , anova,124);
-%desc_mean(Post_creat_3yr, EDTAGroup , anova,130);
-%desc_mean(Post_creat_6mo, EDTAGroup , anova,125);
-%desc_mean(Post_creat_9mo, EDTAGroup , anova,126);
-%desc_mean(Post_creat_lastor3mo, EDTAGroup , anova,131);
-%desc_mean(Post_Lastcreat, EDTAGroup , anova,132);
-%desc_mean(Post_PelvisAUS, EDTAGroup , anova,141);
-%desc_mean(PT_SURV_T, EDTAGroup , anova,97);
-%desc_mean(SUB_T1, EDTAGroup , anova,103);
-%desc_mean(TimeFirstUTI, EDTAGroup , anova,140);
-%desc_mean(TimeMin, EDTAGroup , anova,114);
-%desc_mean(TimeStoneBlock, EDTAGroup , anova,115);
-%desc_mean(TimMinStoneBlock, EDTAGroup , anova,116);
-%desc_mean(UTI_number, EDTAGroup , anova,105);
-%desc_mean(TimeMin, HighCa_Post , anova,208);
-%desc_mean(TimeStoneBlock, HighCa_Post , anova,209);
-%desc_mean(AUSPelvis_post1st, MixedGroup, anova,57);
-%desc_mean(Flush_TmToMin, MixedGroup, anova,62);
-%desc_mean(Post_creat_18mo, MixedGroup, anova,77);
-%desc_mean(Post_creat_1mo, MixedGroup, anova,72);
-%desc_mean(Post_creat_1week, MixedGroup, anova,71);
-%desc_mean(Post_creat_1yr, MixedGroup, anova,76);
-%desc_mean(Post_creat_2yr, MixedGroup, anova,78);
-%desc_mean(Post_creat_3mo, MixedGroup, anova,73);
-%desc_mean(Post_creat_3yr, MixedGroup, anova,79);
-%desc_mean(Post_creat_6mo, MixedGroup, anova,74);
-%desc_mean(Post_creat_9mo, MixedGroup, anova,75);
-%desc_mean(Post_creat_lastor3mo, MixedGroup, anova,80);
-%desc_mean(Post_Lastcreat, MixedGroup, anova,81);
-%desc_mean(Post_PelvisAUS, MixedGroup, anova,90);
-%desc_mean(PT_SURV_T, MixedGroup, anova,46);
-%desc_mean(SUB_T1, MixedGroup, anova,52);
-/*%desc_mean(SUBT_noEDTA, MixedGroup, anova,96);*/
-%desc_mean(TimeFirstUTI, MixedGroup, anova,89);
-%desc_mean(TimeMin, MixedGroup, anova,63);
-%desc_mean(TimeStoneBlock, MixedGroup, anova,64);
-%desc_mean(TimMinStoneBlock, MixedGroup, anova,65);
-%desc_mean(UTI_number, MixedGroup, anova,54);
-%desc_mean(TimeMin, pre_iCa , anova,199);
-%desc_mean(TimeStoneBlock, pre_iCa , anova,200);
-%desc_mean(UTI_Number, PreAbx72, anova,238);
-%desc_mean(UTI_Number, PreSx_UTI , anova,228);
-%desc_mean(UTI_Number, PU_Sx, anova,248);
-%desc_mean(AUSPelvis_post1st, SalineGroup, anova,12);
-%desc_mean(Flush_TmToMin, SalineGroup, anova,17);
-%desc_mean(Post_creat_18mo, SalineGroup, anova,32);
-%desc_mean(Post_creat_1mo, SalineGroup, anova,27);
-%desc_mean(Post_creat_1week, SalineGroup, anova,26);
-%desc_mean(Post_creat_1yr, SalineGroup, anova,31);
-%desc_mean(Post_creat_2yr, SalineGroup, anova,33);
-%desc_mean(Post_creat_3mo, SalineGroup, anova,28);
-%desc_mean(Post_creat_3yr, SalineGroup, anova,34);
-%desc_mean(Post_creat_6mo, SalineGroup, anova,29);
-%desc_mean(Post_creat_9mo, SalineGroup, anova,30);
-%desc_mean(Post_creat_lastor3mo, SalineGroup, anova,35);
-%desc_mean(Post_Lastcreat, SalineGroup, anova,36);
-%desc_mean(Post_PelvisAUS, SalineGroup, anova,45);
-%desc_mean(PT_SURV_T, SalineGroup, anova,1);
-%desc_mean(SUB_T1, SalineGroup, anova,7);
-%desc_mean(TimeFirstUTI, SalineGroup, anova,44);
-%desc_mean(TimeMin, SalineGroup, anova,18);
-%desc_mean(TimeStoneBlock, SalineGroup, anova,19);
-%desc_mean(TimMinStoneBlock, SalineGroup, anova,20);
-%desc_mean(UTI_number, SalineGroup, anova,9);
-%desc_mean(TimeMin, Stone, anova,217);
-%desc_mean(TimeStoneBlock, Stone, anova,218);
+/* Updated mean list 20210227 */
+%desc_mean(Post_creat_18mo, GroupCat , anova,21);
+%desc_mean(Post_creat_1mo, GroupCat , anova,22);
+%desc_mean(Post_creat_1week, GroupCat , anova,23);
+%desc_mean(Post_creat_1yr, GroupCat , anova,24);
+%desc_mean(Post_creat_2yr, GroupCat , anova,25);
+%desc_mean(Post_creat_3mo, GroupCat , anova,26);
+%desc_mean(Post_creat_3yr, GroupCat , anova,27);
+%desc_mean(Post_creat_6mo, GroupCat , anova,28);
+%desc_mean(Post_creat_9mo, GroupCat , anova,29);
+%desc_mean(Post_creat_lastor3mo, GroupCat , anova,30);
+%desc_mean(Post_Lastcreat, GroupCat , anova,34);
+%desc_mean(PT_SURV_T, GroupCat , anova,37);
+%desc_mean(TimeFirstUTI, GroupCat , anova,39);
+%desc_mean(TimeMin, GroupDevice , anova,49);
+%desc_mean(TimeMin, HighCa_Post , anova,58);
+%desc_mean(TimeMin, pre_iCa , anova,72);
+%desc_mean(TimeMin, Stone, anova,109);
+%desc_mean(TimeStoneBlock, GroupDevice , anova,50);
+%desc_mean(TimeStoneBlock, HighCa_Post , anova,59);
+%desc_mean(TimeStoneBlock, pre_iCa , anova,73);
+%desc_mean(TimeStoneBlock, Stone, anova,110);
+%desc_mean(TimMinStoneBlock, GroupDevice , anova,51);
+%desc_mean(UTI_Number, CystoIntraOp, anova,8);
+%desc_mean(UTI_number, GroupCat , anova,43);
+%desc_mean(UTI_Number, PreAbx72, anova,80);
+%desc_mean(UTI_Number, PreSx_UTI , anova,91);
+%desc_mean(UTI_Number, PU_Sx, anova,102);
+%desc_mean(NumberofExchanges, GroupDevice , anova,45);
 
+
+
+
+
+%macro penorm (dv,iv,mod_ty,research_q);
+proc reg data=&ds.;
+  model &dv.= &iv. ;
+  output out=res rstudent=&dv.r /*h=lev cookd=cd dffits=dffit*/ ;
+  ods output ParameterEstimates=pe;
+run;
+quit;
+data pe (drop=variable);
+length iv dv  $50. ;
+set pe (drop=model dependent df tvalue);
+research_q = &research_q.;
+iv = "&iv.";
+dv = "&dv.";
+model="&mod_ty.";
+where variable not in ("Intercept");
+run;
+data pe_all;
+set pe_all pe;
+run;
+* Examine residuals for normality ;
+proc univariate data=res plots plotsize=30 normal;
+  var &dv.r;
+  ods output TestsForNormality=norm;
+run;
+data norm;
+length iv dv $50.;
+set norm (drop=varname);
+research_q = &research_q.;
+iv = "&iv.";
+dv = "&dv.";
+run;
+data norm_all;
+set norm_all norm;
+run;
+
+%mend;
+data norm_all; set _null_; data pe_all; set _null_; run;
+
+%penorm(NumberofExchanges, Flush_Time, regression,133);
+%penorm(TimeFirstUTI, Flush_Time, regression,130);
+%penorm(TimeFirstUTI, SUBT_noEDTA, regression,119);
+%penorm(TimeMin, Flush_Time, regression,131);
+%penorm(TimeMin, SUBT_noEDTA, regression,120);
+%penorm(TimeStoneBlock, Flush_Time, regression,132);
+%penorm(TimeStoneBlock, SUBT_noEDTA, regression,121);
+
+
+%macro logit(dv,iv,prob,model,research_q);
+ ods graphics on;            
+      proc logistic data=&ds. /* plots=roc */;
+         model &dv. (event = "1") = &iv. / rl outroc=roc1;
+         output out=out p=phat;
+         ods output ParameterEstimates=pe Association=a CLoddsWald=cl;
+		 run;
+
+data pe (rename=(variable=iv probchisq=p_value)); 
+length iv dv model research_q $25;
+retain dv; set pe (drop=df); where variable ne "Intercept"; 
+dv = "&dv."; 
+iv = "&iv."; 
+model = "&model."; 
+research_q = "&research_q."; 
+run;
+data a(keep=c_stat); set a (rename=cvalue2=c_stat); where label1="Pairs";
+data cl(drop=effect); set cl ;
+data pe_a_cl (drop=_esttype_); merge pe a cl; run;
+
+
+	data all_pe; set all_pe pe_a_cl; run;
+
+ods graphics off;
+      title  "ROC plot for &dv. = &iv.";  
+      title2 " ";
+          %rocplot( inroc = roc1, inpred = out, p = phat,
+                id = &iv. _sens_ _spec_ _OPTEFF_ _opty_ _cutpt_,
+                optcrit = youden , pevent = &prob.,
+                optsymbolstyle = size=0, optbyx = panelall, x = &iv.)
+
+    data rocme; retain _id &iv. _CORRECT_ _sens_ _spec_ _FALPOS_ _FALNEG_ _opty_;
+set _rocplot (keep=_id &iv. &dv. _CORRECT_ _sens_ _spec_    _sensit_ _FALPOS_ _FALNEG_ _opty_ __spec_ _POS_ _NEG_ );
+if (_sens_ in (0 1)) or (_spec_ in (0 1)) or (_opty_ = "Y")
+then output;
+run;
+%mend;
+data all_pe; set _null_; data all_a; set _null_; data all_cl; set _null_; run;
+
+%logit(Exchanged, Flush_Time, 1,logistic,122);
+%logit(Exchanged, SUBT_noEDTA, 1,logistic,111);
+%logit(HTF_mineral, Flush_Time, 1,logistic,123);
+%logit(HTF_mineral, SUBT_noEDTA, 1,logistic,112);
+%logit(Hx_SUBDeminProt, Flush_Time, 1,logistic,124);
+%logit(Hx_SUBDeminProt, SUBT_noEDTA, 1,logistic,113);
+%logit(Hx_SUBDeminReobstruct, Flush_Time, 1,logistic,125);
+%logit(Hx_SUBDeminReobstruct, SUBT_noEDTA, 1,logistic,114);
+%logit(Hx_SUBDeminWork, Flush_Time, 1,logistic,126);
+%logit(Hx_SUBDeminWork, SUBT_noEDTA, 1,logistic,115);
+%logit(Hx_SUBInfectionProt, Flush_Time, 1,logistic,127);
+%logit(Hx_SUBInfectionProt, SUBT_noEDTA, 1,logistic,116);
+%logit(Hx_SUBinfectionProtWork, Flush_Time, 1,logistic,128);
+%logit(Hx_SUBinfectionProtWork, SUBT_noEDTA, 1,logistic,117);
+%logit(Stone_CompleteOcclude, Flush_Time, 1,logistic,129);
+%logit(Stone_CompleteOcclude, SUBT_noEDTA, 1,logistic,118);
+
+ods trace on;
+proc logistic data=&ds. /* plots=roc */;
+class PreSx_UTI (ref="1") / param=ref;
+model ChronicUTI (event = "1") = PreSx_UTI  ;
+oddsratio "PreSx_UTI" PreSx_UTI / diff=ref; 
+run;
+ods trace off;
+
+
+%macro logit_cat(dv,iv,ref_grp,prob,model,research_q);
+ods trace on;
+ ods graphics on;            
+      proc logistic data=&ds. /* plots=roc */;
+	  class &iv. (ref="&ref_grp.") / param=ref;
+         model &dv. (event = "1") = &iv. / rl outroc=roc1;
+		 output out=out p=phat;
+         ods output ParameterEstimates=pe Association=a CLoddsWald=cl;
+		 run;
+		 ods trace off;
+ %if %sysfunc(exist(pe)) %then %do;
+ %put pe &iv. or &dv.  exist;
+ %end;
+ %else %do;
+ %put pe &iv. or &dv. Inadequate ;
+ %end;
+
+data pe (rename=(probchisq=p_value) drop=variable); 
+length iv dv model research_q $25;
+retain dv; set pe (drop=df); where variable ne "Intercept"; 
+dv = "&dv."; 
+iv = "&iv."; 
+model = "&model."; 
+research_q = "&research_q."; 
+run;
+
+data a(keep=c_stat); set a (rename=cvalue2=c_stat); where label1="Pairs";
+data cl(drop=effect); set cl ;
+data pe_a_cl (drop=_esttype_); merge pe a cl; run;
+
+
+	data all_pe; set all_pe pe_a_cl; run;
+
+ods graphics off;
+      title  "ROC plot for &dv. = &iv.";  
+      title2 " ";
+          %rocplot( inroc = roc1, inpred = out, p = phat,
+                id = &iv. _sens_ _spec_ _OPTEFF_ _opty_ _cutpt_,
+                optcrit = youden , pevent = &prob.,
+                optsymbolstyle = size=0, optbyx = panelall, x = &iv.)
+
+    data rocme; retain _id &iv. _CORRECT_ _sens_ _spec_ _FALPOS_ _FALNEG_ _opty_;
+set _rocplot (keep=_id &iv. &dv. _CORRECT_ _sens_ _spec_    _sensit_ _FALPOS_ _FALNEG_ _opty_ __spec_ _POS_ _NEG_ );
+if (_sens_ in (0 1)) or (_spec_ in (0 1)) or (_opty_ = "Y")
+then output;
+run;
+%mend;
+data all_pe; set _null_; data all_a; set _null_; data all_cl; set _null_; run;
+
+
+proc printto log="&outdir.\logfile.txt";
+   run;
+
+proc printto ; run;
+%logit_cat(ChronicUTI, CystoIntraOp,1, 1,Logistic Categorical,2);
+%logit_cat(ChronicUTI, GroupCat ,1, 1,Logistic Categorical,14);
+%logit_cat(ChronicUTI, PreAbx72,0, 1,Logistic Categorical,74);
+%logit_cat(ChronicUTI, PreSx_UTI ,1, 1,Logistic Categorical,83);
+%logit_cat(ChronicUTI, PU_Sx,1, 1,Logistic Categorical,92);
+%logit_cat(ChronicUTI_PreandPost, PU_Sx,1, 1,Logistic Categorical,93);
+%logit_cat(ClearIFX, CystoIntraOp,0, 1,Logistic Categorical,3);
+%logit_cat(ClearIFX, GroupCat ,1, 1,Logistic Categorical,15);
+%logit_cat(ClearIFX, PreAbx72,1, 1,Logistic Categorical,75);
+%logit_cat(ClearIFX, PreSx_UTI ,0, 1,Logistic Categorical,84);
+%logit_cat(ClearIFX, PU_Sx,0, 1,Logistic Categorical,94);
+%logit_cat(DefRenal, GroupCat ,1, 1,Logistic Categorical,16);
+%logit_cat(DefUreter, GroupCat ,1, 1,Logistic Categorical,17);
+%logit_cat(Exchanged, GroupDevice ,1, 1,Logistic Categorical,44);
+%logit_cat(Exchanged, HighCa_Post ,1, 1,Logistic Categorical,52);
+%logit_cat(Exchanged, pre_iCa ,1, 1,Logistic Categorical,66);
+%logit_cat(Exchanged, Stone,1, 1,Logistic Categorical,103);
+%logit_cat(ExchgeStone_Comp, GroupDevice ,1, 1,Logistic Categorical,46);
+%logit_cat(Hematuria_Gross, GroupCat ,1, 1,Logistic Categorical,18);
+%logit_cat(HTF_mineral, GroupDevice ,1, 1,Logistic Categorical,47);
+%logit_cat(HTF_mineral, HighCa_Post ,1, 1,Logistic Categorical,53);
+%logit_cat(HTF_mineral, pre_iCa ,1, 1,Logistic Categorical,67);
+%logit_cat(HTF_mineral, Stone,1, 1,Logistic Categorical,104);
+%logit_cat(Hx_SUBDeminProt, EDTACombo,1, 1,Logistic Categorical,10);
+%logit_cat(Hx_SUBDeminProt, HighCa_Post ,1, 1,Logistic Categorical,54);
+%logit_cat(Hx_SUBDeminProt, pre_iCa ,1, 1,Logistic Categorical,68);
+%logit_cat(Hx_SUBDeminProt, Stone,1, 1,Logistic Categorical,105);
+%logit_cat(Hx_SUBDeminReobstruct, EDTACombo,1, 1,Logistic Categorical,11);
+%logit_cat(Hx_SUBDeminReobstruct, HighCa_Post ,1, 1,Logistic Categorical,55);
+%logit_cat(Hx_SUBDeminReobstruct, pre_iCa ,1, 1,Logistic Categorical,69);
+%logit_cat(Hx_SUBDeminReobstruct, Stone,1, 1,Logistic Categorical,106);
+%logit_cat(Hx_SUBDeminWork, EDTACombo,1, 1,Logistic Categorical,12);
+%logit_cat(Hx_SUBDeminWork, HighCa_Post ,0, 1,Logistic Categorical,56);
+%logit_cat(Hx_SUBDeminWork, pre_iCa ,1, 1,Logistic Categorical,70);
+%logit_cat(Hx_SUBDeminWork, Stone,0, 1,Logistic Categorical,107);
+%logit_cat(Hx_SUBInfectionProt, EDTACombo,1, 1,Logistic Categorical,9);
+%logit_cat(Hx_SUBinfectionProtWork, EDTACombo,1, 1,Logistic Categorical,13);
+%logit_cat(LikelyRenal, GroupCat ,1, 1,Logistic Categorical,19);
+%logit_cat(NotRenal, GroupCat ,1, 1,Logistic Categorical,20);
+%logit_cat(Post_Dysuria, GroupCat ,1, 1,Logistic Categorical,31);
+%logit_cat(Post_Ecoli, GroupCat ,1, 1,Logistic Categorical,32);
+%logit_cat(Post_Entero, GroupCat ,1, 1,Logistic Categorical,33);
+%logit_cat(Post_Staph, GroupCat ,1, 1,Logistic Categorical,35);
+%logit_cat(Post_UTI_any, CystoIntraOp,1, 1,Logistic Categorical,4);
+%logit_cat(Post_UTI_any, PreAbx72,0, 1,Logistic Categorical,76);
+%logit_cat(Post_UTI_any, PreSx_UTI ,1, 1,Logistic Categorical,85);
+%logit_cat(Post_UTI_any, PU_Sx,1, 1,Logistic Categorical,95);
+%logit_cat(Post_UTIany, GroupCat ,1, 1,Logistic Categorical,36);
+%logit_cat(PreSx_UTI, Hx_Cystot ,1, 1,Logistic Categorical,60);
+%logit_cat(PreSx_UTI, Hx_Pre_UTI ,1, 1,Logistic Categorical,63);
+%logit_cat(PreSx_UTI, PU_Sx,1, 1,Logistic Categorical,96);
+%logit_cat(PurulentDebris, Hx_Cystot ,1, 1,Logistic Categorical,61);
+%logit_cat(PurulentDebris, Hx_Pre_UTI ,1, 1,Logistic Categorical,64);
+%logit_cat(PurulentDebris, PreAbx72 ,0, 1,Logistic Categorical,81);
+%logit_cat(PurulentDebris, PreSx_UTI ,1, 1,Logistic Categorical,86);
+%logit_cat(PurulentDebris, PU_Sx,1, 1,Logistic Categorical,97);
+%logit_cat(Stone_CompleteOcclude, GroupDevice ,1, 1,Logistic Categorical,48);
+%logit_cat(Stone_CompleteOcclude, HighCa_Post ,1, 1,Logistic Categorical,57);
+%logit_cat(Stone_CompleteOcclude, pre_iCa ,1, 1,Logistic Categorical,71);
+%logit_cat(Stone_CompleteOcclude, Stone,1, 1,Logistic Categorical,108);
+%logit_cat(SymptomUTI, CystoIntraOp,1, 1,Logistic Categorical,5);
+%logit_cat(SymptomUTI, GroupCat ,1, 1,Logistic Categorical,38);
+%logit_cat(SymptomUTI, PreAbx72,0, 1,Logistic Categorical,77);
+%logit_cat(SymptomUTI, PreSx_UTI ,1, 1,Logistic Categorical,87);
+%logit_cat(SymptomUTI, PU_Sx,1, 1,Logistic Categorical,98);
+%logit_cat(Uculture_Pyelo_Result, Hx_Cystot ,1, 1,Logistic Categorical,62);
+%logit_cat(Uculture_Pyelo_Result, Hx_Pre_UTI ,1, 1,Logistic Categorical,65);
+%logit_cat(Uculture_Pyelo_Result, PreAbx72 ,0, 1,Logistic Categorical,82);
+%logit_cat(Uculture_Pyelo_Result, PreSx_UTI ,1, 1,Logistic Categorical,88);
+%logit_cat(Uculture_Pyelo_Result, PU_Sx,1, 1,Logistic Categorical,99);
+%logit_cat(UnlikRenal, GroupCat ,1, 1,Logistic Categorical,40);
+%logit_cat(UTI_ChronicBac, AnyUcathPost,1, 1,Logistic Categorical,1);
+%logit_cat(UTI_ChronicBac, CystoIntraOp,1, 1,Logistic Categorical,6);
+%logit_cat(UTI_ChronicBac, GroupCat ,1, 1,Logistic Categorical,41);
+%logit_cat(UTI_ChronicBac, PreAbx72,0, 1,Logistic Categorical,78);
+%logit_cat(UTI_ChronicBac, PreSx_UTI ,1, 1,Logistic Categorical,89);
+%logit_cat(UTI_ChronicBac, PU_Sx,1, 1,Logistic Categorical,100);
+%logit_cat(UTI_ChronicFungal, CystoIntraOp,1, 1,Logistic Categorical,7);
+%logit_cat(UTI_ChronicFungal, GroupCat ,1, 1,Logistic Categorical,42);
+%logit_cat(UTI_ChronicFungal, PreAbx72,0, 1,Logistic Categorical,79);
+%logit_cat(UTI_ChronicFungal, PreSx_UTI ,1, 1,Logistic Categorical,90);
+%logit_cat(UTI_ChronicFungal, PU_Sx,1, 1,Logistic Categorical,101);
+
+
+
+
+/* Moving ChiSquare to bottom, appears to be abandoned and replaced with logit as of 20210227 */
 
 
 
@@ -360,98 +552,4 @@ data ctf_all; set _null_; data f_p; set _null_; data chi_p; set _null_; run;
 %chi(Hx_SUBInfectionProt, UTI_ChronicBac, Chi_Square,265);
 %chi(Hx_SUBInfectionProtWork, UTI_ChronicBac, Chi_Square,266);
 
-
-
-%macro penorm (dv,iv,mod_ty,research_q);
-proc reg data=&ds.;
-  model &dv.= &iv. ;
-  output out=res rstudent=&dv.r /*h=lev cookd=cd dffits=dffit*/ ;
-  ods output ParameterEstimates=pe;
-run;
-quit;
-data pe (drop=variable);
-length iv dv  $50. ;
-set pe (drop=model dependent df tvalue);
-research_q = &research_q.;
-iv = "&iv.";
-dv = "&dv.";
-model="&mod_ty.";
-where variable not in ("Intercept");
-run;
-data pe_all;
-set pe_all pe;
-run;
-* Examine residuals for normality ;
-proc univariate data=res plots plotsize=30 normal;
-  var &dv.r;
-  ods output TestsForNormality=norm;
-run;
-data norm;
-length iv dv $50.;
-set norm (drop=varname);
-research_q = &research_q.;
-iv = "&iv.";
-dv = "&dv.";
-run;
-data norm_all;
-set norm_all norm;
-run;
-
-%mend;
-data norm_all; set _null_; data pe_all; set _null_; run;
-%penorm(TimeFirstUTI,SUBT_noEDTA,regression,276);
-%penorm(TimeMin,SUBT_noEDTA,regression,274);
-%penorm(TimeStoneBlock, SUBT_noEDTA, regression,275);
-
-
-
-%macro logit(dv,iv,prob,model,research_q);
- ods graphics on;            
-      proc logistic data=&ds. /* plots=roc */;
-         model &dv. (event = "1") = &iv. / rl outroc=roc1;
-         output out=out p=phat;
-         ods output ParameterEstimates=pe Association=a CLoddsWald=cl;
-		 run;
-
-data pe (rename=(variable=iv probchisq=p_value)); 
-length iv dv model research_q $25;
-retain dv; set pe (drop=df); where variable ne "Intercept"; 
-dv = "&dv."; 
-iv = "&iv."; 
-model = "&model."; 
-research_q = "&research_q."; 
-run;
-data a(keep=c_stat); set a (rename=cvalue2=c_stat); where label1="Pairs";
-data cl(drop=effect); set cl ;
-data pe_a_cl (drop=_esttype_); merge pe a cl; run;
-
-
-	data all_pe; set all_pe pe_a_cl; run;
-
-ods graphics off;
-      title  "ROC plot for &dv. = &iv.";  
-      title2 " ";
-          %rocplot( inroc = roc1, inpred = out, p = phat,
-                id = &iv. _sens_ _spec_ _OPTEFF_ _opty_ _cutpt_,
-                optcrit = youden , pevent = &prob.,
-                optsymbolstyle = size=0, optbyx = panelall, x = &iv.)
-
-    data rocme; retain _id &iv. _CORRECT_ _sens_ _spec_ _FALPOS_ _FALNEG_ _opty_;
-set _rocplot (keep=_id &iv. &dv. _CORRECT_ _sens_ _spec_    _sensit_ _FALPOS_ _FALNEG_ _opty_ __spec_ _POS_ _NEG_ );
-if (_sens_ in (0 1)) or (_spec_ in (0 1)) or (_opty_ = "Y")
-then output;
-run;
-%mend;
-data all_pe; set _null_; data all_a; set _null_; data all_cl; set _null_; run;
-
-
-/*%logit(Exchanged, SUBT_noEDTA,1,logistic,270); * Exchanged 3 levels should be Chi Square but SUBT_noEDTA continuous and not enough data ;*/
-/*%logit(ExchgeStone_Needed, SUBT_noEDTA, logistic,269); * ExchgeStone_Needed 3 levels should be Chi Square but SUBT_noEDTA continuous and not enough data;*/
-%logit(HTF_mineral, SUBT_noEDTA,1, logistic,267); * Next two are identical given imited data on SUBT_noEDTA;
-%logit(Hx_SUBDeminProt, SUBT_noEDTA,1, logistic,271);
-/*%logit(Hx_SUBDeminReobstruct, SUBT_noEDTA, logistic,273); * 1/0 but Too few observatons ;*/
-/*%logit(Hx_SUBDeminWork, SUBT_noEDTA, logistic,272); * 1/0 but Too few observatons ;*/
-%logit(Hx_SUBInfectionProt, SUBT_noEDTA,1, logistic,277);
-/*%logit(Hx_SUBinfectionProtWork, SUBT_noEDTA, logistic,278); * 1/0 but Too few observatons ;*/
-%logit(Stone_CompleteOcclude, SUBT_noEDTA,1,logistic,268);
 
