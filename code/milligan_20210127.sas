@@ -5,8 +5,13 @@
 %let outdir=U:\Consulting\KEL\Fox\Berent\Milligan_20200921\output;
 libname mlm "U:\Consulting\KEL\Fox\Berent\Milligan_20200921\input" ;
 
-/*data mlm; set mlm.milligan_20210126; run;*/
-data mlm; set mlm.mlm_20210221; run;
+/*data old_mlm; set mlm.mlm_20210221; run;*/
+/*data mlm.mlm_20210515; set mlm_20210515; run;*/
+/*data mlm.mlm_5182021_1300; set mlm_5182021_1300; run;*/
+data mlm; set mlm.mlm_5182021_1300; run;
+
+
+proc compare base= mlm.mlm_20210515 compare=mlm crit=0.0001 method=abs; run;
 
 %let ds = mlm;
 
@@ -190,9 +195,148 @@ data all_pe; set _null_; data all_a; set _null_; data all_cl; set _null_; run;
 %logit(Hx_SUBInfectionProt, Flush_Time, 1,logistic,127);
 %logit(Hx_SUBInfectionProt, SUBT_noEDTA, 1,logistic,116);
 %logit(Hx_SUBinfectionProtWork, Flush_Time, 1,logistic,128);
-%logit(Hx_SUBinfectionProtWork, SUBT_noEDTA, 1,logistic,117);
+/* All 0's where subNoEDTA is present */
+/*%logit(Hx_SUBinfectionProtWork, SUBT_noEDTA, 1,logistic,117);*/
+/*data chk; set &ds. (keep=Hx_SUBinfectionProtWork SUBT_noEDTA); run;*/
 %logit(Stone_CompleteOcclude, Flush_Time, 1,logistic,129);
 %logit(Stone_CompleteOcclude, SUBT_noEDTA, 1,logistic,118);
+
+
+/* Moving ChiSquare to bottom, appears to be abandoned and replaced with logit as of 20210227 */
+
+
+
+
+	*** Chi Square Cross-Tab Frequency Anlaysis Set-up;
+%macro chi(dv,iv1,model,research_q);
+data ds; set &ds.; run;
+/*data ds; set &ds.; if &dv = . or &iv1. = . then delete; run;*/
+/*data ds; set ds ds; run;*/
+proc freq data =  ds;
+tables &iv1.*&dv. / chisq;
+ods output CrossTabFreqs = freqs ChiSq= chi FishersExact = fish ;run;
+run;
+data freqs_in; set freqs (drop =  _table_ rowpercent colpercent); 
+where _type_ in ("11" "00"); drop _type_; run;
+
+data ctf_&research_q. (drop =  &iv1. &dv.); retain model /* analysis */ research_q; length model research_q $50.; set freqs_in; 
+/* analysis = "&analysis."; */ research_q = "&research_q."; model = "&model."; 
+iv1 = put(&iv1.,5.0); iv2 = put(&dv.,5.0);
+run;
+data ctf_all; set ctf_all ctf_&research_q.; run;
+
+	%if %sysfunc(exist(fish)) %then %do;
+data f_&research_q. (rename=nvalue1=P_FISH); set fish (keep =  table name1 nvalue1); 
+where name1 in ("P_TABLE"); drop name1; run;
+data f_p; set f_p f_&research_q.; run;
+	%end;
+	%if %sysfunc(exist(chi)) %then %do;
+data chi_&research_q. (rename=prob=P_CHI); length model research_q $50.;
+set chi (keep =  table statistic prob); 
+where statistic in ("Chi-Square");  drop statistic; 
+model = "&model."; research_q = "&research_q."; run;
+data chi_p; set chi_p chi_&research_q.; run;
+	%end;
+
+proc datasets library=work nolist nodetails; delete chi fish freq p_&research_q. chi_&research_q.; 
+run;
+	%mend;
+
+
+
+proc freq data=&ds.;
+where groupcats ne 1;
+tables ChronicUTI*GroupCats /chisq;
+run;
+
+
+
+
+/*ods pdf file= "&outdir.\mlm_chi.pdf";*/
+data ctf_all; set _null_; data f_p; set _null_; data chi_p; set _null_; run;
+%chi(ChronicUTI, CystotIntraOp,Chi_Square,2);
+%chi(ChronicUTI, GroupCats ,Chi_Square,14);
+%chi(ChronicUTI, PreAbx72,Chi_Square,74);
+%chi(ChronicUTI, PreSx_UTI ,Chi_Square,83);
+%chi(ClearIFX, CystotIntraOp,Chi_Square,3);
+%chi(ClearIFX, GroupCats ,Chi_Square,15);
+%chi(ClearIFX, PreAbx72,Chi_Square,75);
+%chi(ClearIFX, PreSx_UTI ,Chi_Square,84);
+%chi(DefRenal, GroupCats ,Chi_Square,16);
+%chi(DefUreter, GroupCats ,Chi_Square,17);
+%chi(Exchanged, GroupDevices ,Chi_Square,44);
+%chi(Exchanged, HighCa_Post ,Chi_Square,52);
+%chi(Exchanged, pre_iCa ,Chi_Square,66);
+%chi(Exchanged, Stone,Chi_Square,103);
+%chi(ExchgeStone_Comp, GroupDevices ,Chi_Square,46);
+%chi(Hematuria_Gross, GroupCats ,Chi_Square,18);
+%chi(HTF_mineral, GroupDevices ,Chi_Square,47);
+%chi(HTF_mineral, HighCa_Post ,Chi_Square,53);
+%chi(HTF_mineral, pre_iCa ,Chi_Square,67);
+%chi(HTF_mineral, Stone,Chi_Square,104);
+%chi(Hx_SUBDeminProt, EDTACombo,Chi_Square,10);
+%chi(Hx_SUBDeminProt, HighCa_Post ,Chi_Square,54);
+%chi(Hx_SUBDeminProt, pre_iCa ,Chi_Square,68);
+%chi(Hx_SUBDeminProt, Stone,Chi_Square,105);
+%chi(Hx_SUBDeminReobstruct, EDTACombo,Chi_Square,11);
+%chi(Hx_SUBDeminReobstruct, HighCa_Post ,Chi_Square,55);
+%chi(Hx_SUBDeminReobstruct, pre_iCa ,Chi_Square,69);
+%chi(Hx_SUBDeminReobstruct, Stone,Chi_Square,106);
+%chi(Hx_SUBDeminWork, EDTACombo,Chi_Square,12);
+%chi(Hx_SUBDeminWork, HighCa_Post ,Chi_Square,56);
+%chi(Hx_SUBDeminWork, pre_iCa ,Chi_Square,70);
+%chi(Hx_SUBDeminWork, Stone,Chi_Square,107);
+%chi(Hx_SUBInfectionProt, EDTACombo,Chi_Square,9);
+%chi(Hx_SUBinfectionProtWork, EDTACombo,Chi_Square,13);
+%chi(LikelyRenal, GroupCats ,Chi_Square,19);
+%chi(NotRenal, GroupCats ,Chi_Square,20);
+%chi(Post_Dysuria, GroupCats ,Chi_Square,31);
+%chi(Post_Ecoli, GroupCats ,Chi_Square,32);
+%chi(Post_Entero, GroupCats ,Chi_Square,33);
+%chi(Post_Staph, GroupCats ,Chi_Square,35);
+%chi(Post_UTIany, CystotIntraOp,Chi_Square,4);
+%chi(Post_UTIany, PreAbx72,Chi_Square,76);
+%chi(Post_UTIany, PreSx_UTI ,Chi_Square,85);
+%chi(Post_UTIany, GroupCats ,Chi_Square,36);
+%chi(PreSx_UTI, Hx_Cystot ,Chi_Square,60);
+%chi(PreSx_UTI, HxPreUTI ,Chi_Square,63);
+%chi(PurulentDebris, Hx_Cystot ,Chi_Square,61);
+%chi(PurulentDebris, HxPreUTI ,Chi_Square,64);
+%chi(PurulentDebris, PreAbx72 ,Chi_Square,81);
+%chi(PurulentDebris, PreSx_UTI ,Chi_Square,86);
+%chi(Stone_CompleteOcclude, GroupDevices ,Chi_Square,48);
+%chi(Stone_CompleteOcclude, HighCa_Post ,Chi_Square,57);
+%chi(Stone_CompleteOcclude, pre_iCa ,Chi_Square,71);
+%chi(Stone_CompleteOcclude, Stone,Chi_Square,108);
+%chi(SymptomUTI, CystotIntraOp,Chi_Square,5);
+%chi(SymptomUTI, GroupCats ,Chi_Square,38);
+%chi(SymptomUTI, PreAbx72,Chi_Square,77);
+%chi(SymptomUTI, PreSx_UTI ,Chi_Square,87);
+%chi(Uculture_Pyelo_Result, Hx_Cystot ,Chi_Square,62);
+%chi(Uculture_Pyelo_Result, HxPreUTI ,Chi_Square,65);
+%chi(Uculture_Pyelo_Result, PreAbx72 ,Chi_Square,82);
+%chi(Uculture_Pyelo_Result, PreSx_UTI ,Chi_Square,88);
+%chi(UnlikRenal, GroupCats ,Chi_Square,40);
+%chi(ChronicUTI, AnyUcathPost,Chi_Square,1);
+%chi(ChronicUTI, CystotIntraOp,Chi_Square,6);
+%chi(ChronicUTI, GroupCats ,Chi_Square,41);
+%chi(ChronicUTI, PreAbx72,Chi_Square,78);
+%chi(ChronicUTI, PreSx_UTI ,Chi_Square,89);
+ 
+%chi(UTI_ChronicBac, GroupCats,Chi_Square,140);
+%chi(UTI_ChronicFungal, GroupCats,Chi_Square,141);
+
+ods pdf close;
+
+
+
+
+
+
+
+
+
+/* Moving logistic cat for memorialization but no action due to small sample size */
 
 /*ods trace on;*/
 /*proc logistic data=&ds. ;*/
@@ -336,69 +480,4 @@ proc printto log="&outdir.\logfile1.txt"; run;
 
 /*ods pdf close;*/
 ods excel close;
-
-
-
-/* Moving ChiSquare to bottom, appears to be abandoned and replaced with logit as of 20210227 */
-
-
-
-
-	*** Chi Square Cross-Tab Frequency Anlaysis Set-up;
-%macro chi(dv,iv1,model,research_q);
-data ds; set &ds.; run;
-proc freq data =  ds;
-tables &iv1.*&dv. / chisq;
-ods output CrossTabFreqs = freqs ChiSq= chi FishersExact = fish ;run;
-run;
-data freqs_in; set freqs (drop =  _table_ rowpercent colpercent); 
-where _type_ in ("11" "00"); drop _type_; run;
-
-data ctf_&research_q. (drop =  &iv1. &dv.); retain model /* analysis */ research_q; length model research_q $50.; set freqs_in; 
-/* analysis = "&analysis."; */ research_q = "&research_q."; model = "&model."; 
-iv1 = put(&iv1.,5.0); iv2 = put(&dv.,5.0);
-run;
-data ctf_all; set ctf_all ctf_&research_q.; run;
-
-	%if %sysfunc(exist(fish)) %then %do;
-data f_&research_q. (rename=nvalue1=P_FISH); set fish (keep =  table name1 nvalue1); 
-where name1 in ("P_TABLE"); drop name1; run;
-data f_p; set f_p f_&research_q.; run;
-	%end;
-	%if %sysfunc(exist(chi)) %then %do;
-data chi_&research_q. (rename=prob=P_CHI); length model research_q $50.;
-set chi (keep =  table statistic prob); 
-where statistic in ("Chi-Square");  drop statistic; 
-model = "&model."; research_q = "&research_q."; run;
-data chi_p; set chi_p chi_&research_q.; run;
-	%end;
-
-proc datasets library=work nolist nodetails; delete chi fish freq p_&research_q. chi_&research_q.; 
-run;
-	%mend;
-ods pdf file= "&outdir.\mlm_chi.pdf";
-data ctf_all; set _null_; data f_p; set _null_; data chi_p; set _null_; run;
-%chi(ChronicUTI, CystotIntraOp, Chi_Square,2);
-%chi(ClearIFX, CystotIntraOp, Chi_Square,3);
-%chi(DefUreter, GroupCats, Chi_Square,17);
-%chi(Post_Dysuria, GroupCats, Chi_Square,31);
-%chi(UnlikRenal, GroupCats, Chi_Square,40);
-%chi(ChronicUTI, GroupCats, Chi_Square,41);
-%chi(UTI_ChronicBac, GroupCats, Chi_Square,41);
-%chi(UTI_ChronicFungal, GroupCats, Chi_Square,41);
-%chi(Post_UTIany, GroupCats, Chi_Square,41);
-%chi(HTF_mineral, GroupDevices, Chi_Square,46);
-%chi(ExchgeStone_Comp, GroupDevices, Chi_Square,46);
-%chi(Exchanged, GroupDevices, Chi_Square,46);
-%chi(PreSx_UTI, Hx_Cystot, Chi_Square,60);
-%chi(PurulentDebris, Hx_Cystot, Chi_Square,61);
-%chi(Uculture_Pyelo_Result, Hx_Cystot, Chi_Square,62);
-%chi(ChronicUTI, PreAbx72, Chi_Square,74);
-%chi(PurulentDebris, PreAbx72, Chi_Square,81);
-%chi(SymptomUTI, PreAbx72, Chi_Square,77);
-%chi(Post_UTIany, PreAbx72, Chi_Square,76);
-%chi(Uculture_Pyelo_Result, PreAbx72, Chi_Square,82);
-%chi(Uculture_Pyelo_Result, PreSx_UTI, Chi_Square,88);
-%chi(Hx_SUBDeminReobstruct, Stone, Chi_Square,106);
-ods pdf close;
 
