@@ -1,15 +1,15 @@
 
-libname arch "U:\Fox\Berent\Milligan_20200921\input\archive" access=readonly ;
-%let rocpath=U:\Texas_AM\Dobefest;
+libname arch "S:\Fox\Berent\Milligan_20200921\input\archive" access=readonly ;
+%let rocpath=S:\Texas_AM\Dobefest;
 %include "&rocpath.\ROC_Optimal_Cutoff_031816.sas";
-%let outdir=U:\Fox\Berent\Milligan_20200921\output;
-libname mlm "U:\Fox\Berent\Milligan_20200921\input" ;
+%let outdir=S:\Fox\Berent\Milligan_20200921\output;
+libname mlm "S:\Fox\Berent\Milligan_20200921\input" ;
 
 /*data old_mlm; set mlm.mlm_20210221; run;*/
 /*data mlm.mlm_20210515; set mlm_20210515; run;*/
-/*data arch ; set arch.mlm_20210515; run;*/
-data mlm; set mlm.mlm_5182021_1300; run;
-
+/*data arch2 ; set arch.mlm_20210515; run;*/
+/*data arch; set arch.mlm_5182021_1300; run; * Droppeed to 94 obs by removing 40	Gogu Pasko - R*/
+data mlm; set mlm.mlm_10_12_23; run;
 
 /*proc compare base= arch compare=mlm crit=0.0001 method=abs; run;*/
 
@@ -104,7 +104,7 @@ data rawmean; set _null_; data t3; set _null_; data lsmean; set _null_; data dif
 %desc_mean(Pre_Pelvis, GroupDevices , anova,37);
 %desc_mean(Creat24hr, GroupCats , anova,38);
 %desc_mean(DisCreat, GroupCats , anova,39);
-%desc_mean(PT_FOL_T, GroupCats , anova,40);
+/*%desc_mean(PT_FOL_T, GroupCats , anova,40);*/
 %desc_mean(SUB_T1, GroupDevices , anova,41);
 %desc_mean(SUBFlush, GroupDevices , anova,42);
 %desc_mean(Flush_Time, GroupDevices , anova,43);
@@ -198,8 +198,8 @@ run;
 %mend;
 data all_pe; set _null_; data all_a; set _null_; data all_cl; set _null_; run;
 
-%logit(Stone_CompleteOcclude_Exchanged, Flush_Time, 1,logistic,54);
-%logit(Stone_CompleteOcclude_Exchanged, SUBT_noEDTA, 1,logistic,55);
+/*%logit(Stone_CompleteOcclude_Exchanged, Flush_Time, 1,logistic,54);*/
+/*%logit(Stone_CompleteOcclude_Exchanged, SUBT_noEDTA, 1,logistic,55);*/
 %logit(HTF_mineral, Flush_Time, 1,logistic,56);
 %logit(HTF_mineral, SUBT_noEDTA, 1,logistic,57);
 %logit(Hx_SUBDeminProt, Flush_Time, 1,logistic,58);
@@ -277,10 +277,10 @@ data ctf_all; set _null_; data f_p; set _null_; data chi_p; set _null_; run;
 %chi(ClearIFX, PreSx_UTI ,Chi_Square,79);
 %chi(DefRenal, GroupCats ,Chi_Square,80);
 %chi(DefUreter, GroupCats ,Chi_Square,81);
-%chi(Stone_CompleteOcclude_Exchanged, GroupDevices ,Chi_Square,82);
-%chi(Stone_CompleteOcclude_Exchanged, HighCa_Post ,Chi_Square,83);
-%chi(Stone_CompleteOcclude_Exchanged, pre_iCa ,Chi_Square,84);
-%chi(Stone_CompleteOcclude_Exchanged, Stone,Chi_Square,85);
+/*%chi(Stone_CompleteOcclude_Exchanged, GroupDevices ,Chi_Square,82);*/
+/*%chi(Stone_CompleteOcclude_Exchanged, HighCa_Post ,Chi_Square,83);*/
+/*%chi(Stone_CompleteOcclude_Exchanged, pre_iCa ,Chi_Square,84);*/
+/*%chi(Stone_CompleteOcclude_Exchanged, Stone,Chi_Square,85);*/
 %chi(ExchgeStone_Comp, GroupDevices ,Chi_Square,86);
 %chi(Hematuria_Gross, GroupCats ,Chi_Square,87);
 %chi(HTF_mineral, GroupDevices ,Chi_Square,88);
@@ -366,13 +366,13 @@ data ctf_all; set _null_; data f_p; set _null_; data chi_p; set _null_; run;
 
 ods pdf close;
 
-
+/*STONE_COMPLETEOCCLUDE_EXCHANGED Stone_CompleteOcclude_Exchanged*/
 
 %let grp_chi = AnyUcathPost  ChronicUTI ChronicUTI_PreandPost ClearIFX Clot_periop_Occlude Comp_OtherALL CystotIntraOp DefRenal DefUreter
 ExchgeStone_Comp Hematuria_Gross HighCa_Post HighCa_Post  HTF_mineral Hx_CKD Hx_Cystot Hx_Cystot  Hx_SUBDeminProt Hx_SUBDeminReobstruct Hx_SUBDeminWork
 Hx_SUBInfectionProt Hx_SUBinfectionProtWork HxPreUTI HxPreUTI  IntraBleeding IntraClot IntraComp IntraKink IntraLeak IntraOther IntraSubcapBleed Kink
 Leak LikelyRenal NoImprvmtCreat NotRenal Post_Dysuria Post_Ecoli Post_Entero Post_Staph Post_UTIany Pre_iCa pre_iCa  PreAbx72 PreAbx72  PreSx_UTI
-PreSx_UTI  PU_Sx PurulentDebris Sex Stone Stone_CompleteOcclude Stone_CompleteOcclude_Exchanged Stricture SymptomUTI Uculture_Pyelo_Peformed Uculture_Pyelo_Result
+PreSx_UTI  PU_Sx PurulentDebris Sex Stone Stone_CompleteOcclude Stricture SymptomUTI Uculture_Pyelo_Peformed Uculture_Pyelo_Result
 UniBi UnlikRenal;
 
 	*** Chi Square Cross-Tab Frequency Limited Groups;
@@ -423,15 +423,22 @@ run;
 %end;
 	%mend;
 
+
+	
+
+ods pdf file= "C:\Junk\mlm_chi_grps.pdf";
+
+/*ods pdf file= "&outdir.\mlm_chi_grps.pdf";*/
+data ctf_all; set _null_; data f_p; set _null_; data chi_p; set _null_; run;
 %chi2(GroupCats,Chi_Square,500,1,2);
 %chi2(GroupCats,Chi_Square,501,1,3);
 %chi2(GroupCats,Chi_Square,502,2,3);
 %chi2(GroupDevices,Chi_Square,503,1,2);
 %chi2(GroupDevices,Chi_Square,504,1,3);
 %chi2(GroupDevices,Chi_Square,505,2,3);
-data ctf_all; set _null_; data f_p; set _null_; data chi_p; set _null_; run;
 
-ods pdf file= "&outdir.\mlm_chi_grps.pdf";
+
+
 
 
 
